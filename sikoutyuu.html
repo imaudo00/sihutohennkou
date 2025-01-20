@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>シフト変更申請フォーム</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 20px;
+      line-height: 1.5;
+      background-color: #f9f9f9;
+    }
+    h1 {
+      margin-bottom: 20px;
+      text-align: center;
+      font-size: 1.8em;
+      color: #333;
+    }
+    form {
+      max-width: 700px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #555;
+    }
+    input[type="text"],
+    input[type="date"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1em;
+      box-sizing: border-box;
+    }
+    textarea {
+      resize: vertical;
+    }
+    button {
+      display: inline-block;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 10px 20px;
+      font-size: 1em;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .change-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap; /* レイアウトが崩れすぎないように折り返し可能に */
+    }
+    .change-item input,
+    .change-item select {
+      flex: 1;
+      min-width: 120px; /* 幅が狭くなりすぎないように調整 */
+    }
+    .notes {
+      font-size: 0.9em;
+      color: #777;
+      margin-top: 10px;
+    }
+    .form-section {
+      margin-bottom: 30px;
+    }
+  </style>
+</head>
+<body>
+  <h1>シフト変更申請フォーム</h1>
+  <form id="shiftForm" onsubmit="sendToChatWebhook(event)">
+    <div class="form-section">
+      <label for="employeeId">社員番号</label>
+      <input
+        id="employeeId"
+        name="employeeId"
+        type="text"
+        pattern="[0-9]+"
+        placeholder="半角数字のみ"
+        required
+      />
+    </div>
+
+    <div class="form-section">
+      <label for="name">氏名</label>
+      <input
+        id="name"
+        name="name"
+        type="text"
+        required
+      />
+    </div>
+
+    <div class="form-section">
+      <label for="applicationDate">申請日</label>
+      <input
+        type="date"
+        id="applicationDate"
+        name="applicationDate"
+        required
+      />
+    </div>
+
+    <div class="form-section">
+      <label for="change-details">変更事項</label>
+      <div id="changeDetailsContainer">
+        <!-- 初期表示する変更事項の入力欄 -->
+        <div class="change-item">
+          <input type="date" name="changeDate[]" required />
+          <select name="changeType[]" required>
+            <option value="">選択してください</option>
+            <option value="休み">休み</option>
+            <option value="出勤">出勤</option>
+           </select>
+          <select name="changeStartTime[]" required>
+            <option value="">開始時間</option>
+            <option value="00:00">00:00</option>
+            <option value="00:30">00:30</option>
+            <option value="01:00">01:00</option>
+            <option value="01:30">01:30</option>
+            <option value="02:00">02:00</option>
+            <option value="02:30">02:30</option>
+            <option value="03:00">03:00</option>
+            <option value="03:30">03:30</option>
+            <option value="04:00">04:00</option>
+            <option value="04:30">04:30</option>
+            <option value="05:00">05:00</option>
+            <option value="05:30">05:30</option>
+            <option value="06:00">06:00</option>
+            <option value="06:30">06:30</option>
+            <option value="07:00">07:00</option>
+            <option value="07:30">07:30</option>
+            <option value="08:00">08:00</option>
+            <option value="08:30">08:30</option>
+            <option value="09:00">09:00</option>
+            <option value="09:30">09:30</option>
+            <option value="10:00">10:00</option>
+            <option value="10:30">10:30</option>
+            <option value="11:00">11:00</option>
+            <option value="11:30">11:30</option>
+            <option value="12:00">12:00</option>
+            <option value="12:30">12:30</option>
+            <option value="13:00">13:00</option>
+            <option value="13:30">13:30</option>
+            <option value="14:00">14:00</option>
+            <option value="14:30">14:30</option>
+            <option value="15:00">15:00</option>
+            <option value="15:30">15:30</option>
+            <option value="16:00">16:00</option>
+            <option value="16:30">16:30</option>
+            <option value="17:00">17:00</option>
+            <option value="17:30">17:30</option>
+            <option value="18:00">18:00</option>
+            <option value="18:30">18:30</option>
+            <option value="19:00">19:00</option>
+            <option value="19:30">19:30</option>
+            <option value="20:00">20:00</option>
+            <option value="20:30">20:30</option>
+            <option value="21:00">21:00</option>
+            <option value="21:30">21:30</option>
+            <option value="22:00">22:00</option>
+            <option value="22:30">22:30</option>
+            <option value="23:00">23:00</option>
+            <option value="23:30">23:30</option>
+          </select>
+          <select name="changeEndTime[]" required>
+            <option value="">終了時間</option>
+            <option value="00:00">00:00</option>
+            <option value="00:30">00:30</option>
+            <option value="01:00">01:00</option>
+            <option value="01:30">01:30</option>
+            <option value="02:00">02:00</option>
+            <option value="02:30">02:30</option>
+            <option value="03:00">03:00</option>
+            <option value="03:30">03:30</option>
+            <option value="04:00">04:00</option>
+            <option value="04:30">04:30</option>
+            <option value="05:00">05:00</option>
+            <option value="05:30">05:30</option>
+            <option value="06:00">06:00</option>
+            <option value="06:30">06:30</option>
+            <option value="07:00">07:00</option>
+            <option value="07:30">07:30</option>
+            <option value="08:00">08:00</option>
+            <option value="08:30">08:30</option>
+            <option value="09:00">09:00</option>
+            <option value="09:30">09:30</option>
+            <option value="10:00">10:00</option>
+            <option value="10:30">10:30</option>
+            <option value="11:00">11:00</option>
+            <option value="11:30">11:30</option>
+            <option value="12:00">12:00</option>
+            <option value="12:30">12:30</option>
+            <option value="13:00">13:00</option>
+            <option value="13:30">13:30</option>
+            <option value="14:00">14:00</option>
+            <option value="14:30">14:30</option>
+            <option value="15:00">15:00</option>
+            <option value="15:30">15:30</option>
+            <option value="16:00">16:00</option>
+            <option value="16:30">16:30</option>
+            <option value="17:00">17:00</option>
+            <option value="17:30">17:30</option>
+            <option value="18:00">18:00</option>
+            <option value="18:30">18:30</option>
+            <option value="19:00">19:00</option>
+            <option value="19:30">19:30</option>
+            <option value="20:00">20:00</option>
+            <option value="20:30">20:30</option>
+            <option value="21:00">21:00</option>
+            <option value="21:30">21:30</option>
+            <option value="22:00">22:00</option>
+            <option value="22:30">22:30</option>
+            <option value="23:00">23:00</option>
+            <option value="23:30">23:30</option>
+          </select>
+          <select name="changeBreakTime[]" required>
+            <option value="">休憩時間</option>
+            <option value="0">休憩なし</option>
+            <option value="15">15分</option>
+            <option value="30">30分</option>
+            <option value="45">45分</option>
+            <option value="60">1時間</option>
+            <option value="75">1時間15分</option>
+            <option value="90">1時間30分</option>
+          </select>
+        </div>
+      </div>
+      <button type="button" onclick="addChangeItem()">変更事項を追加</button>
+    </div>
+
+    <div class="form-section">
+      <label for="remarks">備考</label>
+      <textarea
+        id="remarks"
+        name="remarks"
+        rows="3"
+        placeholder="追加の情報やコメントを入力してください"
+      ></textarea>
+    </div>
+
+    <div class="notes">
+      ★ 申請はシフト変更日の2日前までにお願いします。<br />
+      ★ シフト提出忘れの場合は出勤日のみ申請の送信をお願いします。
+    </div>
+
+    <button type="submit">送信</button>
+  </form>
+
+  <!-- 外部JSファイルを読み込む -->
+  <script src="shift_change_script.js"></script>
+</body>
+</html>
