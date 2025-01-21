@@ -2,8 +2,8 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>シフト変更申請フォーム</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" /> <!-- スマホ対応 -->
   <style>
     body {
       font-family: 'Arial', sans-serif;
@@ -80,11 +80,44 @@
     .form-section {
       margin-bottom: 30px;
     }
+
+    /* ▼ ボタンの並びを左右に分けるためのラッパ */
+    .form-actions {
+      display: flex;
+      justify-content: space-between; /* 左右に分ける */
+      align-items: flex-start;
+      margin-top: 20px;
+    }
+
+    /* ▼ 「勤務連絡はこちら」の小さな説明文 */
+    .work-info-text {
+      color: #777;
+      font-size: 0.9em;
+      margin-top: 5px;
+    }
+
+    /* ▼ リンクをボタン風にするためのクラス */
+    .work-link-btn {
+      display: inline-block;
+      background-color: #28a745;
+      color: #fff;
+      border-radius: 4px;
+      padding: 10px 20px;
+      font-size: 1em;
+      text-decoration: none; /* リンクの下線を消す */
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .work-link-btn:hover {
+      background-color: #218838;
+    }
   </style>
 </head>
 <body>
   <h1>シフト変更申請フォーム</h1>
   <form id="shiftForm" onsubmit="sendToChatWebhook(event)">
+
+    <!-- 社員番号 -->
     <div class="form-section">
       <label for="employeeId">社員番号</label>
       <input
@@ -97,6 +130,7 @@
       />
     </div>
 
+    <!-- 氏名 -->
     <div class="form-section">
       <label for="name">氏名</label>
       <input
@@ -107,6 +141,7 @@
       />
     </div>
 
+    <!-- 申請日 -->
     <div class="form-section">
       <label for="applicationDate">申請日</label>
       <input
@@ -117,6 +152,7 @@
       />
     </div>
 
+    <!-- 変更事項 -->
     <div class="form-section">
       <label for="change-details">変更事項</label>
       <div id="changeDetailsContainer">
@@ -127,7 +163,7 @@
             <option value="">選択してください</option>
             <option value="休み">休み</option>
             <option value="出勤">出勤</option>
-           </select>
+          </select>
           <select name="changeStartTime[]" required>
             <option value="">開始時間</option>
             <option value="00:00">00:00</option>
@@ -245,6 +281,7 @@
       <button type="button" onclick="addChangeItem()">変更事項を追加</button>
     </div>
 
+    <!-- 備考 -->
     <div class="form-section">
       <label for="remarks">備考</label>
       <textarea
@@ -260,7 +297,21 @@
       ★ シフト提出忘れの場合は出勤日のみ申請の送信をお願いします。
     </div>
 
-    <button type="submit">送信</button>
+    <!-- ▼ 送信ボタン(左) と 勤務連絡ボタン(右) -->
+    <div class="form-actions">
+      <!-- 左側: 送信ボタン -->
+      <button type="submit">送信</button>
+
+      <!-- 右側: 勤務連絡ボタン & テキスト -->
+      <div>
+        <!-- ボタンの代わりにaタグでリンク先へ飛ぶ -->
+        <a href="https://imaudo00.github.io/kinntaikannri/" target="_blank" class="work-link-btn">
+          勤務連絡
+        </a>
+        <div class="work-info-text">勤務連絡はこちら</div>
+      </div>
+    </div>
+
   </form>
 
   <!-- 外部JSファイルを読み込む -->
