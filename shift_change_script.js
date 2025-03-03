@@ -40,26 +40,25 @@ document.addEventListener("DOMContentLoaded", function () {
         <option value="">選択してください</option>
         <option value="休み">休み</option>
         <option value="出勤">出勤</option>
-      </select>
-      <select name="changeStartTime[]" required>
-        <option value="" ${initialStartTime ? "" : "selected"}>開始時間</option>
-        ${
-          Array.from({ length: 24 }, (_, i) => {
-            const t = i.toString().padStart(2, '0') + ":00";
-            // もし t が initialStartTime と一致すれば selected をつける
-            return `<option value="${t}" ${t === initialStartTime ? "selected" : ""}>${t}</option>`;
-          }).join('')
-        }
-      </select>
-      <select name="changeEndTime[]" required>
-        <option value="" ${initialEndTime ? "" : "selected"}>終了時間</option>
-        ${
-          Array.from({ length: 24 }, (_, i) => {
-            const t = i.toString().padStart(2, '0') + ":00";
-            return `<option value="${t}" ${t === initialEndTime ? "selected" : ""}>${t}</option>`;
-          }).join('')
-        }
-      </select>
+     </select>
+    <select name="changeStartTime[]" required>
+      <option value="" ${initialStartTime ? "" : "selected"}>開始時間</option>
+      ${
+        Array.from({ length: 24 * 2 }, (_, i) => {
+          const t = `${Math.floor(i / 2).toString().padStart(2, '0')}:${i % 2 === 0 ? '00' : '30'}`;
+          return `<option value="${t}" ${t === initialStartTime ? "selected" : ""}>${t}</option>`;
+        }).join('')
+      }
+    </select>
+    <select name="changeEndTime[]" required>
+      <option value="" ${initialEndTime ? "" : "selected"}>終了時間</option>
+      ${
+        Array.from({ length: 24 * 2 }, (_, i) => {
+          const t = `${Math.floor(i / 2).toString().padStart(2, '0')}:${i % 2 === 0 ? '00' : '30'}`;
+          return `<option value="${t}" ${t === initialEndTime ? "selected" : ""}>${t}</option>`;
+        }).join('')
+      }
+    </select>
       <select name="changeBreakTime[]" required>
         <option value="" ${initialBreakTime ? "" : "selected"}>休憩時間</option>
         <option value="0"   ${initialBreakTime === "0"   ? "selected" : ""}>休憩なし</option>
